@@ -74,8 +74,7 @@ var App = React.createClass({
   }
 });
 
-var appProps = {users: USERS};
-React.render(<App {...appProps}/>, document.body);
+React.render(<App users={USERS}/>, document.body);
 
 require('./tests').run(Gravatar, emailType);
 
