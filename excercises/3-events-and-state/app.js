@@ -18,10 +18,8 @@ var App = React.createClass({
         };
     },
 
-    onClickTab(newIndex) {
-        this.setState({
-            activeIndex: newIndex
-        });
+    onClickTab(activeIndex) {
+        this.setState({ activeIndex });
     },
 
     renderTabs() {
