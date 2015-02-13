@@ -1,16 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Excercise:
 //
-// - Don't access `USERS` directly in the app, use a prop
-// - Validate Gravatar's `size` property, allow it to be a
-//   a number, or a string that can be converted to a number,
-//   ie: `size="asdf"` should warn
-//   (TODO: react propTypes docs)
-// - in emailType, what if the prop name isn't email? what if we wanted
-//   the prop to be "userEmail" or "loginId"? Switch the Gravatar
-//   prop name from "email" to "loginId", send a bad value, and then
-//   fix the code to make the warning make sense.
-// - how many times does `getDefaultProps` get called?
 // - experiment with some of the other propTypes, send improper values
 //   and look at the messages you get
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,20 +13,33 @@ var warning = require('react/lib/warning');
 var GRAVATAR_URL = "http://gravatar.com/avatar";
 
 var USERS = [
-  { id: 1, name: 'Ryan Florence', email: 'rpflorencegmail.com' },
+  { id: 1, name: 'Ryan Florence', email: 'rpflorence@gmail.com' },
   { id: 2, name: 'Michael Jackson', email: 'mjijackson@gmail.com' }
 ];
 
 var emailType = (props, propName, componentName) => {
   warning(
-    validateEmail(props.email),
-    `Invalid email '${props.email}' sent to 'Gravatar'. Check the render method of '${componentName}'.`
+    validateEmail(props[propName]),
+    `Invalid ${propName} '${props[propName]}' sent to ${componentName}. Check the render method of ${componentName}.`
+  );
+};
+
+function validateNumeric(n) {
+    // @see http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+var numericType = (props, propName, componentName) => {
+  warning(
+    validateNumeric(props[propName]),
+    `Invalid ${propName} '${props[propName]}' sent to ${componentName}. Check the render method of ${componentName}.`
   );
 };
 
 var Gravatar = React.createClass({
   propTypes: {
-    email: emailType
+    email: emailType,
+    size: numericType
   },
 
   getDefaultProps () {
@@ -55,7 +58,7 @@ var Gravatar = React.createClass({
 
 var App = React.createClass({
   render () {
-    var users = USERS.map((user) => {
+    var users = this.props.users.map((user) => {
       return (
         <li key={user.id}>
           <Gravatar email={user.email} size={36} /> {user.name}
@@ -71,7 +74,8 @@ var App = React.createClass({
   }
 });
 
-React.render(<App />, document.body);
+var appProps = {users: USERS};
+React.render(<App {...appProps}/>, document.body);
 
-//require('./tests').run(Gravatar, emailType);
+require('./tests').run(Gravatar, emailType);
 
