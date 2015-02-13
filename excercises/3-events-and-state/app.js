@@ -6,8 +6,8 @@ var React = require('react');
 var assign = require('react/lib/Object.assign');
 
 var DATA = [
-  { name: 'USA', description: 'Land of the Free, Home of the brave' },
-  { name: 'China', description: 'Lots of concrete' },
+  { name: 'USA', description: 'Land of the free, home of the brave.' },
+  { name: 'China', description: 'Lots of concrete.' },
   { name: 'Russia', description: 'World Cup 2018!' },
 ];
 
