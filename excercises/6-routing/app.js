@@ -43,13 +43,24 @@ var App = React.createClass({
     });
   },
 
+  destroy: function(id) {
+    ContactStore.removeContact(id);
+    // this.transitionTo('/');
+    console.log(this, this.parent);
+  },
+
   render: function () {
     var contacts = this.state.contacts.map(function (contact) {
-      return <li key={contact.id}><Link to="contact" params={contact}>{contact.first}</Link></li>;
-    });
+      return (<li key={contact.id}>
+        <Link to="contact" params={contact}>{contact.first}</Link>
+        <button onClick={this.destroy.bind(this, contact.id)}>Delete</button>
+      </li>);
+    }, this);
     return (
       <div className="App">
         <div className="ContactList">
+          <Link to="about">About</Link>
+          <br />
           <Link to="new">New Contact</Link>
           <ul>
             {contacts}
@@ -153,6 +164,12 @@ var NewContact = React.createClass({
   }
 });
 
+var About = React.createClass({
+  render: function () {
+    return <h2>About</h2>;
+  }
+});
+
 var NotFound = React.createClass({
   render: function () {
     return <h2>Not found</h2>;
@@ -162,6 +179,7 @@ var NotFound = React.createClass({
 var routes = (
   <Route handler={App}>
     <DefaultRoute handler={Index}/>
+    <Route name="about" handler={About}/>
     <Route name="new" path="contact/new" handler={NewContact}/>
     <Route name="contact" path="contact/:id" handler={Contact}/>
     <NotFoundRoute handler={NotFound}/>
