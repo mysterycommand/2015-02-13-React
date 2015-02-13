@@ -26,7 +26,7 @@ var Menu = React.createClass({
     var items = this.props.items
         .filter(function(item) { return item.type === 'mexican'; })
         .sort(function(a, b) { return (a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0); })
-        .map(function(item, key) {
+        .map(function(item) {
             return <li id={item.id} key={item.id} className={item.type}>{item.name}</li>;
         });
 
